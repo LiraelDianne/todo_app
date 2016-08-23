@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root 'users#welcome'
 
-  get '/projects' => 'projects#home'
+  get '/home' => 'projects#home'
 
   get '/projects/new' => 'projects#new'
 
@@ -34,6 +34,18 @@ Rails.application.routes.draw do
   patch '/users/:id' => 'users#update'
 
   delete 'users/:id' => 'users#delete'
+
+  post '/tasks/new' => 'tasks#create'
+
+  post '/projects/:id/tasks/new' => 'tasks#create'
+
+  get '/tasks/:id' => 'tasks#edit'
+
+  post '/tasks/:id' => 'tasks#update'
+
+  delete '/tasks/:id' => 'tasks#delete'
+
+  post '/comments/new' => 'comments#create'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
