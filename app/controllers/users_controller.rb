@@ -32,7 +32,7 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id
       redirect_to '/projects'
     else 
-      flash[:errors] = @user.errors.full_messages
+      flash[:errors] = @user.errors
       redirect_to action: 'welcome'
     end
   end
@@ -48,7 +48,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     unless @user.update(user_params)
-      flash[:errors] = @user.errors.full_messages
+      flash[:errors] = @user.errors
     end
     redirect_to '/projects'
   end
