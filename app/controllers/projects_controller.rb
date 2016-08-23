@@ -13,10 +13,18 @@ class ProjectsController < ApplicationController
 
   def create
     @project = Project.new(project_params)
+    @user = User.find(session[user_id])
     if @project.valid?
+      @project.save
+      @project.users.push(@user)
       params[:project][:team].each do |user_id| 
-        @user = User.find(user_id)
-        @user.projects.
+        user = User.find(user_id)
+        @project.users.push(user)
+      end
+    else
+      flash[:errors] = @project.errors
+      redirect_to action: 'new'
+    end
   end
 
   def show
