@@ -1,4 +1,6 @@
 class ProjectsController < ApplicationController
+  before_action :require_login
+
   def home
     # displays the logged-in user's projects and tasks
     @user = User.find(session[:user_id])
@@ -28,12 +30,20 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    @project = Project.find(params[:id])
   end
 
   def edit
+    @project = Project.find(params[:id])
   end
 
   def update
+    @project.find(params[:id])
+    unless @project.update(project_params)
+      flash[:errors] = @project.errors
+      redirect_to action: 'edit', id: @project.id
+    end
+    redirect_to action: 'show', id: @project.id
   end
 
   def delete

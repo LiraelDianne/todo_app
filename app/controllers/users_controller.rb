@@ -16,7 +16,7 @@ class UsersController < ApplicationController
       redirect_to action: 'welcome'
     else
       session[:user_id] = user.id
-      redirect_to '/projects'
+      redirect_to '/home'
     end
   end
 
@@ -30,8 +30,8 @@ class UsersController < ApplicationController
     if @user.valid?
       @user.save
       session[:user_id] = @user.id
-      redirect_to '/projects'
-    else
+      redirect_to '/home'
+    else 
       flash[:errors] = @user.errors.full_messages
       redirect_to action: 'welcome'
     end
@@ -49,8 +49,9 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     unless @user.update(user_params)
       flash[:errors] = @user.errors
+      redirect_to action: 'edit', id: @user.id
     end
-    redirect_to '/projects'
+    redirect_to action: 'show', id: @user.id 
   end
 
   def delete
