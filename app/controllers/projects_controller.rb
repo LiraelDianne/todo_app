@@ -17,7 +17,7 @@ class ProjectsController < ApplicationController
     if @project.valid?
       @project.save
       @project.users.push(@user)
-      params[:project][:team].each do |user_id| 
+      params[:project][:team].each do |user_id|
         user = User.find(user_id)
         @project.users.push(user)
       end
@@ -41,7 +41,7 @@ class ProjectsController < ApplicationController
     redirect_to action: 'home'
   end
 
-  private 
+  private
   def project_params
     params.require(:project).permit(:name, :description, :start_date, :end_date)
   end

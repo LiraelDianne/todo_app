@@ -1,3 +1,19 @@
-<h1>Projects#new</h1>
-<p>Find me in app/views/projects/new.html.erb</p>
+<a href="/logout">Log Out</a>
+<a href="/projects">Projects Dashboard</a>
+<h1>New Project</h1>
+<form action="/projects" method="post">
+  <fieldset>
+    <legend>Project</legend>
+    <input type="hidden" name="authenticity_token" value="<%= field_authenticity_token %>">
+    Name: <input type="text" name="project[name]">
+    Start Date: <input type="date" name="project[start_date]">
+    End Date: <input type="date" name="project[end_date]">
+    Description:<br><textarea name="project[description]" rows="8" cols="40"></textarea><br>
+    Users:
+    <% @users.each do |user| %>
+      <input type="checkbox" name="project[user]" value="<%= user.id %>">
+    <% end %>
+    <input type="submit" value="Create Project">
+  </fieldset>
+</form>
 <!-- make checkboxes with all ids of @users and name the element 'project[team]' -->
