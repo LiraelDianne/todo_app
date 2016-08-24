@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
     # displays the logged-in user's projects and tasks
     @user = User.find(session[:user_id])
     @projects = @user.projects
-    @tasks = @user.tasks
+    @tasks = @user.tasks.where(project: nil).where(completed: false)
   end
 
   def new
@@ -31,6 +31,7 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Project.find(params[:id])
+    @tasks = @project.tasks.where(completed: false)
   end
 
   def edit
@@ -44,6 +45,18 @@ class ProjectsController < ApplicationController
       redirect_to action: 'edit', id: @project.id
     end
     redirect_to action: 'show', id: @project.id
+  end
+
+  def add_user
+    @project = Project.find(params[:id])
+    @newuser = params[:user_id]
+    @project.users.push(@newuser)
+    redirect_to(:back)
+  end
+
+  def completed_tasks
+    @project = Project.find(params[:id])
+    @tasks = @project.tasks.where(completed: true)
   end
 
   def delete
