@@ -30,8 +30,10 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    @user = User.find(session[:user_id])
     @project = Project.find(params[:id])
-    @tasks = @project.tasks.where(completed: false)
+    @user_tasks = @project.tasks.where(completed: false).where(user: @user)
+    @tasks = @project.tasks.where(completed: false).where.not(user: @user)
   end
 
   def edit
