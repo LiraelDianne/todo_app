@@ -45,7 +45,7 @@ Rails.application.routes.draw do
 
   post '/projects/:id/tasks/new' => 'tasks#create'
 
-  get '/tasks/completed' => 'tasks#completed'
+  get '/tasks/complete' => 'tasks#completed'
 
   get '/tasks/:id' => 'tasks#edit'
 
