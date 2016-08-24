@@ -22,11 +22,9 @@
 </form>
 <h3>All Tasks</h3>
 <% @tasks.each do |task| %>
-  <% if @tasks.completed == false %>
-    <form action="/tasks/<%= task.id %>" method="post">
-      <input type="hidden" name="_method" value="patch">
-      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-      <input type="checkbox" name="task[completed]" value="true"><%= task.name %></input>
-    </form>
-  <% end %>
+  <form action="/tasks/<%= task.id %>" method="post">
+    <input type="hidden" name="_method" value="patch">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type="checkbox" onChange="this.form.submit()" name="task[completed]" value="true"><%= task.name %></input>
+  </form>
 <% end %>
