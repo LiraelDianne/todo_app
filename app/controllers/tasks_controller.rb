@@ -1,6 +1,11 @@
 class TasksController < ApplicationController
 	before_action :require_login
 
+	def index
+		@user = User.find(session[:user_id])
+		@tasks = @user.tasks
+	end
+
 	def create
 		task = Task.new(task_params)
 		if params(:id) 
@@ -20,6 +25,11 @@ class TasksController < ApplicationController
 			end
 		end
 		redirect_to(:back)
+	end
+
+	def completed
+		@user = User.find(session[:user_id])
+		@tasks = @user.tasks.where(completed: true)
 	end
 
 	def edit
