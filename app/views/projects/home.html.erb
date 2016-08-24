@@ -1,4 +1,3 @@
-
 <a href="/logout">Log Out</a>
 <h1>Projects</h1>
 <% @projects.each do |project| %>
@@ -22,12 +21,10 @@
   </fieldset>
 </form>
 <h3>All Tasks</h3>
-<form action="/tasks" method="post">
-  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-  <% @tasks.each do |task| %>
-    <% if @tasks.completed == false %>
-      <input type="checkbox" name="task[completed]" value="<%= task.id %>"> <%= task.name %> <br>
-    <% end %>
-  <% end %>
-  <input type="submit" value="Complete">
-</form>
+<% @tasks.each do |task| %>
+  <form action="/tasks/<%= task.id %>" method="post">
+    <input type="hidden" name="_method" value="patch">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type="checkbox" onChange="this.form.submit()" name="task[completed]" value="true"><%= task.name %></input>
+  </form>
+<% end %>

@@ -49,7 +49,7 @@ Rails.application.routes.draw do
 
   get '/tasks/:id' => 'tasks#edit'
 
-  post '/tasks/:id' => 'tasks#update'
+  patch '/tasks/:id' => 'tasks#update'
 
   delete '/tasks/:id' => 'tasks#delete'
 
