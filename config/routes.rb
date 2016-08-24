@@ -11,6 +11,10 @@ Rails.application.routes.draw do
 
   get '/projects/:id/edit' => 'projects#edit'
 
+  post '/projects/:id/add' => 'projects#add_user'
+
+  get '/projects/:id/complete' => 'projects#completed_tasks'
+
   put '/projects/:id' => 'projects#update'
 
   patch '/projects/:id' => 'projects#update'
@@ -35,9 +39,13 @@ Rails.application.routes.draw do
 
   delete 'users/:id' => 'users#delete'
 
+  get '/tasks' => 'tasks#index'
+
   post '/tasks/new' => 'tasks#create'
 
   post '/projects/:id/tasks/new' => 'tasks#create'
+
+  get '/tasks/complete' => 'tasks#completed'
 
   get '/tasks/:id' => 'tasks#edit'
 
