@@ -25,6 +25,10 @@ strong {
   width: 300px;
 }
 
+ul {
+  list-style-type: none;
+}
+
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.

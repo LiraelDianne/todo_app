@@ -1,3 +1,33 @@
 
 <a href="/logout">Log Out</a>
-<h1>Projects#home</h1>
+<h1>Projects</h1>
+<% @projects.each do |project| %>
+  <a href="/projects/<%= project.id %>">
+    <h4><%= project.name %></h4>
+  </a>
+  <ul>
+    <li><%= project.users.first_name  %></li>
+  </ul>
+<% end %>
+<a href="/projects/new">Create a New Project</a>
+<h2>Add a Task</h2>
+<form action="/tasks" method="post">
+  <fieldset>
+    <legend>Task</legend>
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <input type="text" name="task[name]" placeholder="Name">
+      <input type="date" name="task[due_date]" placeholder="Due Date">
+      <textarea name="task[description]" rows="8" cols="40">Description</textarea>
+      <input type="submit" value="Create Task">
+  </fieldset>
+</form>
+<h3>All Tasks</h3>
+<form action="/tasks" method="post">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <% @tasks.each do |task| %>
+    <% if @tasks.completed == false %>
+      <input type="checkbox" name="task[completed]" value="<%= task.id %>"> <%= task.name %> <br>
+    <% end %>
+  <% end %>
+  <input type="submit" value="Complete">
+</form>
