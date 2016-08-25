@@ -1,2 +1,20 @@
-<h1>Users#edit</h1>
-<p>Find me in app/views/users/edit.html.erb</p>
+<a href="/logout">Log Out</a>
+<a href="/home">Products Dashboard</a>
+<a href="/users/<%= @user.id %>">Go Back</a>
+<h2>Edit Your Profile</h2>
+<form action="/users/<%= @user.id %>" method="post">
+  <fieldset>
+    <legend>Edit</legend>
+    <input type="hidden" name="_method" value="patch">
+    <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+    <input type="text" name="user[first_name]" value="<%= @user.first_name %>" placeholder="First Name">
+    <input type="text" name="user[last_name]" value="<%= @user.last_name %>" placeholder="Last Name">
+    <input type="text" name="user[email]" value="<%= @user.email %>" placeholder="Email Address">
+    <input type="submit" value="Update">
+    <% flash.each do |key, value| %>
+      <% value.each do |msg| %>
+        <strong><%= msg %></strong>
+      <% end %>
+    <% end %>
+  </fieldset>
+</form>

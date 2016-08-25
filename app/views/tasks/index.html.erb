@@ -1,1 +1,10 @@
-<p>Show all of a user's tasks</p>
+<a href="/logout">Log Out</a>
+<a href="/home">Projects Dashboard</a>
+<h1>All Your Tasks</h1>
+<% @tasks.each do |task| %>
+  <form action="/tasks/<%= task.id %>" method="post">
+    <input type="hidden" name="_method" value="patch">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type="checkbox" onChange="this.form.submit()" name="task[completed]" value="true"><%= task.name %></input>
+  </form>
+<% end %>

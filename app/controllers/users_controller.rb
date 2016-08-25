@@ -2,7 +2,8 @@ class UsersController < ApplicationController
   before_action :require_login, except: [:welcome, :login, :create]
 
   def index
-    @users = User.all
+    @user = User.find(session[:user_id])
+    @users = User.where.not(id: session[:user_id])
   end
 
   def welcome
@@ -31,7 +32,7 @@ class UsersController < ApplicationController
       @user.save
       session[:user_id] = @user.id
       redirect_to '/home'
-    else 
+    else
       flash[:errors] = @user.errors.full_messages
       redirect_to action: 'welcome'
     end
@@ -39,6 +40,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @tasks = @user.tasks
   end
 
   def edit
@@ -46,12 +48,13 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.find(params[:id])
-    unless @user.update(user_params)
-      flash[:errors] = @user.errors
+    @user = User.update(params[:id], first_name: params[:user][:first_name], last_name: params[:user][:last_name], email: params[:user][:email])
+    unless @user.valid?
+      flash[:errors] = @user.errors.full_messages
       redirect_to action: 'edit', id: @user.id
+    else
+      redirect_to action: 'show', id: @user.id
     end
-    redirect_to action: 'show', id: @user.id 
   end
 
   def delete

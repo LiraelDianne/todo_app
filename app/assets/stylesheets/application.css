@@ -1,9 +1,4 @@
 
-input {
-  display: block;
-  margin: 10px;
-}
-
 strong {
   display: block;
   color: red;
@@ -30,6 +25,15 @@ ul {
 }
 textarea {
   display: block;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+    padding: 5px;
 }
 
 /*
