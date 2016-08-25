@@ -44,10 +44,11 @@ class ProjectsController < ApplicationController
   def update
     @project.find(params[:id])
     unless @project.update(project_params)
-      flash[:errors] = @project.errors
+      flash[:errors] = @project.errors.full_messages
       redirect_to action: 'edit', id: @project.id
+    else
+      redirect_to action: 'show', id: @project.id
     end
-    redirect_to action: 'show', id: @project.id
   end
 
   def add_user

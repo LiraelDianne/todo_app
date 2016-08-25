@@ -1,2 +1,21 @@
-<h1>Projects#edit</h1>
-<p>Find me in app/views/projects/edit.html.erb</p>
+<a href="/logout">Log Out</a>
+<a href="/home">Projects Dashboard</a>
+<a href="/projects/<%= @project.id %>">Back to Project</a>
+<h2>Edit Project</h2>
+<form action="/projects/<%= @project.id %>" method="post">
+  <fieldset>
+    <legend>Edit</legend>
+    <input type="hidden" name="_method" value="patch">
+    <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+    <input type="text" name="project[name]" value="<%= @project.name %>" placeholder="Name">
+    <textarea name="project[description]" rows="8" cols="40"><%= @project.description %></textarea>
+    <input type="date" name="project[start_date]" value="<%= @project.start_date %>">
+    <input type="date" name="project[end_date]" value="<%= @project.end_date %>">
+    <input type="submit" value="Update">
+    <% flash.each do |key, value| %>
+      <% value.each do |msg| %>
+        <strong><%= msg %></strong>
+      <% end %>
+    <% end %>
+  </fieldset>
+</form>
