@@ -1,14 +1,18 @@
 <a href="/logout">Log Out</a>
+<a href="/users">View All Users</a>
+<a href="/tasks">View All Your Tasks</a>
 <h1>Projects</h1>
+<a href="/projects/new">Create a New Project</a>
 <% @projects.each do |project| %>
   <a href="/projects/<%= project.id %>">
     <h4><%= project.name %></h4>
   </a>
   <ul>
-    <li><%= project.users.first_name  %></li>
+    <% project.users.each do |u| %>
+    <li><%= u.first_name  %></li>
+    <% end %>
   </ul>
 <% end %>
-<a href="/projects/new">Create a New Project</a>
 <h2>Add a Task</h2>
 <form action="/tasks" method="post">
   <fieldset>
