@@ -1,10 +1,10 @@
 <a href="/logout">Log Out</a>
-<a href="/projects">Projects Dashboard</a>
+<a href="/home">Projects Dashboard</a>
 <h1>New Project</h1>
 <form action="/projects" method="post">
   <fieldset>
     <legend>Project</legend>
-    <input type="hidden" name="authenticity_token" value="<%= field_authenticity_token %>">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
     Name: <input type="text" name="project[name]">
     Start Date: <input type="date" name="project[start_date]">
     End Date: <input type="date" name="project[end_date]">
