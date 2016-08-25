@@ -6,5 +6,5 @@ class User < ActiveRecord::Base
   validates :first_name, :last_name, presence: true, length: {in: 2...50}
   email_regex = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]+)\z/i
   validates :email, uniqueness: {case_sensitive: false}, format: {with: email_regex}
-  validates :password, length: {minimum: 8}
+  validates :password, length: {minimum: 8}, on: :create
 end

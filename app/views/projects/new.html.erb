@@ -11,7 +11,7 @@
     Description:<br><textarea name="project[description]" rows="8" cols="40"></textarea><br>
     Users:
     <% @users.each do |user| %>
-      <input type="checkbox" name="project[user]" value="<%= user.id %>">
+      <input type="checkbox" name="project[user]" value="<%= user.id %>"><%= user.first_name %> <%= user.last_name %><br>
     <% end %>
     <input type="submit" value="Create Project">
   </fieldset>
