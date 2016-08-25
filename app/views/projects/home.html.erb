@@ -1,14 +1,24 @@
 
 <a href="/logout">Log Out</a>
 <h1>Projects</h1>
-<% @projects.each do |project| %>
-  <a href="/projects/<%= project.id %>">
-    <h4><%= project.name %></h4>
-  </a>
-  <ul>
-    <li><%= project.users.first_name  %></li>
-  </ul>
-<% end %>
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Team</th>
+	</tr>
+	<% @projects.each do |project| %>
+	  <tr>
+		  <th><a href="/projects/<%= project.id %>">
+		    <h4><%= project.name %></h4>
+		  </a></th>
+		  <th><ul>
+		  	<% project.users.each do |user| %>
+			    <li><%= user.first_name  %></li>
+			<% end %>
+		  </ul></th>
+	  </tr>
+	<% end %>
+</table>
 <a href="/projects/new">Create a New Project</a>
 <h2>Add a Task</h2>
 <form action="/tasks" method="post">
@@ -22,12 +32,17 @@
   </fieldset>
 </form>
 <h3>All Tasks</h3>
-<form action="/tasks" method="post">
-  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-  <% @tasks.each do |task| %>
-    <% if @tasks.completed == false %>
-      <input type="checkbox" name="task[completed]" value="<%= task.id %>"> <%= task.name %> <br>
-    <% end %>
-  <% end %>
-  <input type="submit" value="Complete">
+<table>
+	<% @tasks.each do |task| %>
+		<tr>
+	    	<td><form action="/tasks/<%= task.id %>" method="post">
+	      <input type="hidden" name="_method" value="patch">
+	      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+	      <input type="checkbox" onChange="this.form.submit()" name="task[completed]" value="true">
+	    	</form></td>
+	    	<td><%= task.name %></td>
+	    	<td>Due on <%=task.due_date%></td>
+	    </tr>
+	<% end %>
+</table>
 </form>
