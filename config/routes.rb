@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
   patch '/projects/:id/add' => 'projects#add_user'
 
+  patch '/projects/:id/remove' => 'projects#remove_user'
+
   get '/projects/:id/complete' => 'projects#completed_tasks'
 
   put '/projects/:id' => 'projects#update'

@@ -1,6 +1,7 @@
 <script type="text/javascript">
   $(document).ready(function() {
   	$('.add_user').hide()
+  	$('.remove_user').hide()
   })
   $(document).on('click', '.complete_task', function() {
   	$.post(
@@ -41,18 +42,41 @@
   $(document).on('click', '.show_add_form', function() {
   	$('.add_user').show()
   	$(this).hide()
-  })
+  });
+  $(document).on('click', '.show_remove_form', function() {
+  	$('.remove_user').show()
+  	$(this).hide()
+  });
   $(document).on('submit', '.add_user', function() {
   	$.post(
   		$(this).attr('action'),
   		$(this).serialize(),
   		function(data) {
   			if(data.status == 'successful') {
-  				$('.team').append('<a href="/users/'+data.user.id+'">'+data.user.first_name+' '+data.user.last_name+'</a>')
-  				//remove user from select
+  				$('.user'+data.user.id).remove()
+  				$('.team').append('<a class="user'+data.user.id+'" href="/users/'+data.user.id+'">'+data.user.first_name+' '+data.user.last_name+'</a>')
+  				$('#user_remove').append('<option class="user'+data.user.id+'" value="'+data.user.id+'">'+data.user.first_name+' '+data.user.last_name+'</option>')
   				$('.show_add_form').show()
   				$('.add_user').hide()
+  			} else {
+  				console.log('data:', data)
+  			}
+  		}, 
+  		"json"
+  	)
+  	return false;
+  });
+  $(document).on('submit', '.remove_user', function() {
+  	$.post(
+  		$(this).attr('action'),
+  		$(this).serialize(),
+  		function(data) {
+  			console.log('data:', data)
+  			if(data.status == 'successful') {
   				$('.user'+data.user.id).remove()
+  				$('.show_remove_form').show()
+  				$('.remove_user').hide()
+  				$('#new_users').append('<option class="user'+data.user.id+'" value="'+data.user.id+'">'+data.user.first_name+' '+data.user.last_name+'</option>')
   			} else {
   				console.log('data:', data)
   			}
@@ -69,7 +93,7 @@
 <h1><%=@project.name%></h1>
 <h4 class="team">Team members:
 	<% @project.users.each do |u| %>
-		<a href="/users/<%=u.id%>"><%=u.first_name%> <%=u.last_name%></a>
+		<a class='user<%=u.id%>' href="/users/<%=u.id%>"><%=u.first_name%> <%=u.last_name%></a>
 	<% end %>
 </h4>
 <form class='add_user' action="/projects/<%=@project.id%>/add" method="post">
@@ -85,6 +109,17 @@
 	<button type="submit">Add</button>
 </form>
 <button class="show_add_form">Add new team member</button>
+<form class='remove_user' action="/projects/<%=@project.id%>/remove" method="post">
+	<input type="hidden" name="_method" value="patch">
+	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+	<label>Team members: <select id='user_remove' name="user_id">
+		<% @project.users.each do |u| %>
+			<option class='user<%=u.id%>' value="<%=u.id%>"><%=u.first_name%> <%=u.last_name%></option>
+		<% end %>
+	</select></label>
+	<button type="submit">Remove</button>
+</form>
+<button class="show_remove_form">Remove a team member</button>
 <h2>Your tasks:</h2>
 <table class="user_tasks">
 	<% @user_tasks.each do |task| %>
@@ -95,7 +130,7 @@
 	      <input type="checkbox" name="task[completed]" value="true" class="complete_task">
 	    	</form></td>
 	    	<td><%= task.name %></td>
-	    	<td>Due on <%=task.due_date%></td>
+	    	<td>due on <%=task.due_date%></td>
 	    </tr>
 	<% end %>
 </table>
@@ -103,13 +138,8 @@
 <table class="team_tasks">
 	<% @tasks.each do |task| %>
 		<tr class="task<%=task.id%>">
-	    	<td><form action="/tasks/<%= task.id %>" method="post">
-	      <input type="hidden" name="_method" value="patch">
-	      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-	      <input type="checkbox" name="task[completed]" value="true" class="complete_task">
-	    	</form></td>
 	    	<td><%= task.name %></td>
-	    	<td>Due on <%=task.due_date%></td>
+	    	<td>due on <%=task.due_date%></td>
 	    </tr>
 	<% end %>
 </table>
@@ -133,6 +163,4 @@
 <h2>Project details:</h2>
 <p><%=@project.description%></p>
 
-
-<!--Not yet implemented:
-a comment section (maybe in a sidebar?) as well as a form for submitting a new comment.  Form needs an attribute named 'commentable' with the project id, as well as an attribute named 'commentable_type' with the value as 'project' -->
+<!-- Not yet implemented: a comment section (maybe in a sidebar?) as well as a form for submitting a new comment.  Form needs an attribute named 'commentable' with the project id, as well as an attribute named 'commentable_type' with the value as 'project' -->
