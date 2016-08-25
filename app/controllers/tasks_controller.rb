@@ -23,9 +23,9 @@ class TasksController < ApplicationController
 				render json: {status: 'unsuccessful', error: @task.errors}
 			end
 		else
-			@user = User.find(session[:id])
+			@user = User.find(session[:user_id])
 			if task.valid?
-				@user.tasks.create(task_params)
+				task = @user.tasks.create(task_params)
 				render json: {status: 'successful', task: task}
 			else 
 				render json: {status: 'unsuccessful', error: @task.errors}

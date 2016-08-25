@@ -1,4 +1,40 @@
-<a href="/logout">Log Out</a>
+<script type="text/javascript">
+  $(document).on('click', '.complete_task', function() {
+  	$.post(
+  	  $(this).parent().attr('action'),
+  	  $(this).parent().serialize(),
+  	  function(data){
+  	  	if(data.status == 'successful') {
+  	  		$('.task'+data.task_id).remove()
+  	  	} else {
+  	  		console.log("data:", data)
+  	  	}
+  	  },
+  	  "json"
+  	)
+  	return false;
+  });
+  $(document).on('submit', '.new_task', function() {
+  	console.log('hitting jquery submit')
+  	$.post(
+  	  $(this).attr('action'),
+  	  $(this).serialize(),
+  	  function(data){
+  	  	if(data.status == 'successful') {
+  	  		$('.other_tasks').append('<tr class="task'+data.task.id+'"><td><form action="/tasks/'+data.task.id+'" method="post"><input type="hidden" name="_method" value="patch"><input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>"><input type="checkbox" name="task[completed]" value="true" class="complete_task"></form></td><td>'+data.task.name+'</td><td>due on '+data.task.due_date+'</td></tr>')
+  	  	} else {
+  	  		console.log("data:", data)
+  	  	}
+  	  },
+  	  "json"
+  	)
+  	return false;
+  });
+</script>
+<div class="nav">	
+	<a href="/logout">Log Out</a>
+	<a href="/tasks">Go to all current tasks</a>
+</div>
 <h1>Projects</h1>
 <table>
 	<tr>
@@ -20,27 +56,27 @@
 </table>
 <a href="/projects/new">Create a New Project</a>
 <h2>Add a Task</h2>
-<form action="/tasks" method="post">
+<form class="new_task" action="/tasks/new" method="post">
   <fieldset>
     <legend>Task</legend>
       <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
       <input type="text" name="task[name]" placeholder="Name">
       <input type="date" name="task[due_date]" placeholder="Due Date">
-      <textarea name="task[description]" rows="8" cols="40">Description</textarea>
+      <textarea name="task[description]" rows="8" cols="40" placeholder="task description"></textarea>
       <input type="submit" value="Create Task">
   </fieldset>
 </form>
-<h3>All Tasks</h3>
-<table>
+<h3>Other Tasks</h3>
+<table class='other_tasks'>
 	<% @tasks.each do |task| %>
-		<tr>
+		<tr class="task<%=task.id%>">
 	    	<td><form action="/tasks/<%= task.id %>" method="post">
 	      <input type="hidden" name="_method" value="patch">
 	      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-	      <input type="checkbox" onChange="this.form.submit()" name="task[completed]" value="true">
+	      <input type="checkbox" name="task[completed]" value="true" class="complete_task">
 	    	</form></td>
 	    	<td><%= task.name %></td>
-	    	<td>Due on <%=task.due_date%></td>
+	    	<td>due on <%=task.due_date%></td>
 	    </tr>
 	<% end %>
 </table>
