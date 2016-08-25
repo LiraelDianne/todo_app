@@ -58,6 +58,13 @@ class ProjectsController < ApplicationController
     render json: {status: 'successful', user: @newuser}
   end
 
+  def remove_user
+    @project = Project.find(params[:id])
+    @remove_user = User.find(params[:user_id])
+    @project.users.delete(@remove_user)
+    render json: {status: 'successful', user: @remove_user}
+  end
+
   def completed_tasks
     @project = Project.find(params[:id])
     @tasks = @project.tasks.where(completed: true)
