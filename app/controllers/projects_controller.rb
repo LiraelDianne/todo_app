@@ -31,6 +31,7 @@ class ProjectsController < ApplicationController
 
   def show
     @user = User.find(session[:user_id])
+    @users = User.all
     @project = Project.find(params[:id])
     @user_tasks = @project.tasks.where(completed: false).where(user: @user)
     @tasks = @project.tasks.where(completed: false).where.not(user: @user)
@@ -51,9 +52,9 @@ class ProjectsController < ApplicationController
 
   def add_user
     @project = Project.find(params[:id])
-    @newuser = params[:user_id]
+    @newuser = User.find(params[:user_id])
     @project.users.push(@newuser)
-    redirect_to(:back)
+    render json: {status: 'successful', user: @newuser}
   end
 
   def completed_tasks

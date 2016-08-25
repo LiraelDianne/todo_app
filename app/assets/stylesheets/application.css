@@ -23,6 +23,9 @@ strong {
 ul {
   list-style-type: none;
 }
+textarea {
+  display: block;
+}
 
 table {
     border-collapse: collapse;
